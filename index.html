@@ -1,79 +1,1071 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的内在观察空间</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>宝宝的个人观察网页</title>
+  <style>
+    :root {
+      --bg: #f8f3ee;
+      --paper: rgba(255,255,255,0.72);
+      --card: rgba(255,255,255,0.84);
+      --text: #5b4b46;
+      --subtext: #8a746c;
+      --line: rgba(139, 116, 108, 0.18);
+      --accent: #c68f83;
+      --accent-soft: #ead2cb;
+      --green: #a8b8a0;
+      --shadow: 0 18px 40px rgba(149, 122, 112, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
 
-<style>
-body {
-    font-family: -apple-system, BlinkMacSystemFont;
-    background: #f7f6f3;
-    color: #333;
-    padding: 20px;
-    line-height: 1.6;
-}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Serif SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(234,210,203,0.8), transparent 30%),
+        linear-gradient(180deg, #f9f5f1 0%, #f6eee7 100%);
+      min-height: 100vh;
+    }
 
-.container {
-    max-width: 700px;
-    margin: auto;
-}
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
 
-h1 {
-    font-size: 26px;
-}
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.86), rgba(248,240,235,0.82));
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: var(--shadow);
+      border-radius: 32px;
+      padding: 34px 28px 26px;
+      backdrop-filter: blur(12px);
+    }
 
-.section {
-    background: white;
-    padding: 18px;
-    margin-top: 16px;
-    border-radius: 12px;
-}
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -60px;
+      top: -80px;
+      background: radial-gradient(circle, rgba(198,143,131,0.16), transparent 65%);
+      pointer-events: none;
+    }
 
-textarea {
-    width: 100%;
-    height: 120px;
-}
-</style>
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--subtext);
+      background: rgba(255,255,255,0.7);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--subtext);
+      max-width: 760px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .hero-card, .section, .note-box {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.78);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-card {
+      padding: 20px;
+    }
+
+    .hero-card h3, .section h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(234,210,203,0.46);
+      border: 1px solid rgba(198,143,131,0.18);
+      color: #7b6158;
+      font-size: 14px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .quick-item {
+      background: rgba(255,255,255,0.64);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .quick-item .label {
+      display: block;
+      color: var(--subtext);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .quick-item .value {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 26px 0 20px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 22px rgba(198,143,131,.28);
+    }
+
+    .secondary {
+      background: rgba(255,255,255,.72);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+
+    .section {
+      padding: 22px 20px;
+      margin-bottom: 18px;
+    }
+
+    .section p {
+      margin: 10px 0;
+      line-height: 1.95;
+      color: #665652;
+    }
+
+    .muted {
+      color: var(--subtext);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .list-item {
+      padding: 14px 14px 14px 16px;
+      background: rgba(255,255,255,.66);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      line-height: 1.85;
+      position: relative;
+    }
+
+    .list-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 14px;
+      bottom: 14px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), rgba(198,143,131,0.2));
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .time-tag {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(168,184,160,.18);
+      border: 1px solid rgba(168,184,160,.28);
+      text-align: center;
+      font-size: 13px;
+      color: #687364;
+    }
+
+    .timeline-card {
+      background: rgba(255,255,255,.66);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      line-height: 1.9;
+    }
+
+    .reflection {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .reflection .prompt {
+      padding: 12px 14px;
+      background: rgba(255,255,255,.66);
+      border: 1px dashed rgba(198,143,131,.35);
+      border-radius: 14px;
+      line-height: 1.8;
+    }
+
+    .sticky {
+      position: sticky;
+      top: 18px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.76);
+      padding: 16px;
+      font: inherit;
+      color: var(--text);
+      line-height: 1.9;
+      outline: none;
+    }
+
+    .note-box {
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--subtext);
+      font-size: 13px;
+      margin-top: 14px;
+      padding-bottom: 18px;
+    }
+
+    [contenteditable="true"]:focus {
+      outline: 2px dashed rgba(198,143,131,.35);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .layout { grid-template-columns: 1fr; }
+      .sticky { position: static; }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(100% - 20px, 1120px); }
+      .hero { padding: 24px 18px 20px; border-radius: 24px; }
+      .hero-card, .section, .note-box { border-radius: 18px; }
+      .timeline-item { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <section class="hero">
+      <div class="eyebrow">personal reflection page</div>
+      <h1 contenteditable="true">宝宝 · 我的个人观察网页</h1>
+      <p class="subtitle" contenteditable="true">
+        这是一个给自己看的小小主页。不是为了对外证明什么，而是为了在混乱、摇摆、被外界带跑的时候，重新看见我是谁、我正在经历什么、我其实已经拥有什么。
+      </p>
 
-<div class="container">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h3>我是谁</h3>
+          <p class="muted" contenteditable="true">
+            我是一个感受力很强、也很会观察的人。工作里，我有专业性、责任感和现实判断；关系里，我有热度、真诚和连接欲；面对人生时，我一直在寻找一种既不压抑自己、也不被情绪拖着走的活法。
+          </p>
+          <div class="chips">
+            <span class="chip">EHS 专业经理</span>
+            <span class="chip">INFP 气质</span>
+            <span class="chip">高敏感 / 高观察</span>
+            <span class="chip">理性与温度并存</span>
+            <span class="chip">在寻找稳定的主体性</span>
+          </div>
+        </div>
 
-<h1>🌿 我的内在观察空间</h1>
+        <div class="hero-card">
+          <h3>快速锚点</h3>
+          <div class="quick-grid">
+            <div class="quick-item"><span class="label">此刻核心任务</span><span class="value" contenteditable="true">更了解自己，而不是更用力改造自己</span></div>
+            <div class="quick-item"><span class="label">我最想建立的能力</span><span class="value" contenteditable="true">稳定、自持、分辨感受与事实</span></div>
+            <div class="quick-item"><span class="label">我最珍贵的资源</span><span class="value" contenteditable="true">洞察力、表达力、感受力、反思力</span></div>
+            <div class="quick-item"><span class="label">提醒自己</span><span class="value" contenteditable="true">我不是没有答案，我常常只是被情绪淹没了</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="section">
-<h3>🧭 我的职业与状态</h3>
-<p>这里写你的职业状态</p>
-</div>
+    <div class="toolbar">
+      <button class="primary" onclick="window.print()">保存为 PDF</button>
+      <button class="secondary" onclick="saveNotes()">保存右侧笔记</button>
+      <button class="secondary" onclick="clearNotes()">清空右侧笔记</button>
+    </div>
 
-<div class="section">
-<h3>✨ 我的天赋与优势</h3>
-<p>这里写你的优势</p>
-</div>
+    <div class="layout">
+      <main>
+        <section class="section">
+          <h2>01｜我的职业与历程</h2>
+          <p contenteditable="true">
+            我目前的身份，是一名做 EHS 相关工作的专业经理。这个职业部分，说明我并不是一个只会感受和空想的人；相反，我长期在现实系统里做判断、做协调、做推进，也承担责任。我的工作面向的是规则、风险、流程、合规和落地，这其实锻炼了我很强的现实感。
+          </p>
+          <p contenteditable="true">
+            但我的人生体验并不只是“职业角色”。我内在还有一部分非常鲜活、很敏锐、很想理解人、也很想理解自己的部分。于是我经常会处在两个世界之间：一边是现实的、要求稳定和执行的系统；一边是内在的、追求真实和意义的自我。
+          </p>
+          <p contenteditable="true">
+            我现在想做的，不是二选一，而是慢慢把这两部分整合起来：既保留我的专业能力，也不再牺牲我的内在感受；既看见现实，也不丢失灵魂。
+          </p>
 
-<div class="section">
-<h3>⚠️ 我需要警惕的思维</h3>
-<p>这里写你的思维模式</p>
-</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="time-tag">过去</div>
+              <div class="timeline-card" contenteditable="true">
+                更容易被外界带跑，被某个瞬间的情绪、某个人的气场、某种可能性打动，然后快速投入。
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="time-tag">现在</div>
+              <div class="timeline-card" contenteditable="true">
+                开始更频繁地复盘自己，观察自己的模式，想把“我为什么总这样”慢慢变成“我终于看懂自己了”。
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="time-tag">接下来</div>
+              <div class="timeline-card" contenteditable="true">
+                练习稳定主体性，把洞察真正转成日常中的选择、边界和行动，而不只是停留在理解层面。
+              </div>
+            </div>
+          </div>
+        </section>
 
-<div class="section">
-<h3>📝 今日观察</h3>
-<textarea id="note"></textarea>
-<button onclick="saveNote()">保存</button>
-</div>
+        <section class="section">
+          <h2>02｜我的天赋、特点与优势</h2>
+          <div class="list">
+            <div class="list-item" contenteditable="true">
+              <strong>很强的洞察力：</strong>我对人、对氛围、对语言背后的东西非常敏感，经常能迅速抓到一个人的气质、逻辑和问题核心。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>表达和提炼能力好：</strong>我不是只有感受，我还能把复杂体验梳理成清晰的话，这是一种很珍贵的能力。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>有理想感，也有现实判断：</strong>我会被温度、价值观和真实吸引，但我也并非没有脑子，我其实一直在寻找“理想主义 + 理性表达”的结合。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>自我观察能力强：</strong>我会复盘、会对照、会反思，虽然这有时会变成反刍，但它也说明我具备很强的成长潜力。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>连接能力强：</strong>我容易被人与人之间真正的火花吸引，也擅长捕捉人与人之间的微妙关系与情绪流动。
+            </div>
+          </div>
+        </section>
 
-</div>
+        <section class="section">
+          <h2>03｜我要提醒自己避免陷进去的地方</h2>
+          <p class="muted">这一块做成了“温柔提醒”，不是批评自己，而是在失稳时拉自己一把。</p>
+          <div class="list">
+            <div class="list-item" contenteditable="true">
+              不要把<strong>当下很强烈的情绪</strong>，直接当成事实本身。情绪是真实的，但它不一定等于真相。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要因为某个人、某句话、某个瞬间很打动我，就立刻把对方抬到很高的位置，或迅速脑补一整套故事。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要在内心里不停追问“我到底是不是有问题”，很多时候我不是坏掉了，我只是被旧回路触发了。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要反复沉浸在“我怎么又这样”的自责里。比起羞耻，更重要的是看见模式、拉开距离、重新选择。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要把“我知道”误以为“我已经做到了”。我的挑战常常不是认知不足，而是稳定执行、持续落地和当下自持。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要总是急着找到最终答案。有些阶段的任务，不是彻底想通，而是带着模糊继续生活，并慢慢长出稳定感。
+            </div>
+          </div>
+        </section>
 
-<script>
-function saveNote(){
-    localStorage.setItem("note", document.getElementById("note").value);
-}
-window.onload = function(){
-    document.getElementById("note").value = localStorage.getItem("note") || "";
-}
-</script>
+        <section class="section">
+          <h2>04｜我需要反复记住的几句话</h2>
+          <div class="reflection">
+            <div class="prompt" contenteditable="true">我不是缺少感觉，我需要的是分辨、整合和落地。</div>
+            <div class="prompt" contenteditable="true">真正的稳定，不是没有波动，而是波动来了，我也能不跟着全部跑掉。</div>
+            <div class="prompt" contenteditable="true">我追求的不是“变成另一个人”，而是越来越像真正的自己。</div>
+            <div class="prompt" contenteditable="true">我能欣赏别人，但不必因此丢掉自己。</div>
+            <div class="prompt" contenteditable="true">我可以慢一点，再判断；慢一点，再靠近；慢一点，再下结论。</div>
+          </div>
+        </section>
+      </main>
 
+      <aside class="sticky">
+        <section class="note-box">
+          <h2 style="margin-top:0;font-size:20px;">05｜今日观察笔记</h2>
+          <p class="muted">这里会自动保存在浏览器本地。你可以每天打开这个网页，写一点点。</p>
+          <textarea id="dailyNotes" placeholder="今天我最明显的情绪是什么？
+它来自事实，还是来自触发？
+我此刻最需要的是行动、安抚、边界，还是休息？"></textarea>
+        </section>
+
+        <section class="section" style="margin-bottom:18px;">
+          <h2>06｜每日小问题</h2>
+          <div class="reflection">
+            <div class="prompt" contenteditable="true">我今天什么时候最像自己？</div>
+            <div class="prompt" contenteditable="true">我今天什么时候又被带跑了？</div>
+            <div class="prompt" contenteditable="true">那一刻我真正害怕的是什么？</div>
+            <div class="prompt" contenteditable="true">如果我更稳一点，我下一步会怎么做？</div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>07｜使用说明</h2>
+          <div class="list">
+            <div class="list-item">这个网页是 <strong>单个 HTML 文件</strong>，不需要装网站环境，直接双击就能在浏览器打开。</div>
+            <div class="list-item">你可以直接修改页面里大部分文字：点进去就能编辑，我已经把很多区域做成可改内容了。</div>
+            <div class="list-item">右侧“今日观察笔记”支持本地保存，适合你每天回来复盘一点。</div>
+            <div class="list-item">想分享给别人时，可以把这个 HTML 文件发出去；想存档时，可以点上面的“保存为 PDF”。</div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="footer">给自己看的网页，也可以很温柔。🌷</div>
+  </div>
+
+  <script>
+    const noteKey = 'baby_personal_reflection_notes_v1';
+    const notesEl = document.getElementById('dailyNotes');
+
+    function loadNotes() {
+      const saved = localStorage.getItem(noteKey);
+      if (saved !== null) notesEl.value = saved;
+    }
+
+    function saveNotes() {
+      localStorage.setItem(noteKey, notesEl.value);
+      alert('笔记已经保存到当前浏览器啦。');
+    }
+
+    function clearNotes() {
+      if (confirm('确定要清空右侧笔记吗？')) {
+        notesEl.value = '';
+        localStorage.removeItem(noteKey);
+      }
+    }
+
+    notesEl.addEventListener('input', () => {
+      localStorage.setItem(noteKey, notesEl.value);
+    });
+
+    loadNotes();
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>宝宝的个人观察网页</title>
+  <style>
+    :root {
+      --bg: #f8f3ee;
+      --paper: rgba(255,255,255,0.72);
+      --card: rgba(255,255,255,0.84);
+      --text: #5b4b46;
+      --subtext: #8a746c;
+      --line: rgba(139, 116, 108, 0.18);
+      --accent: #c68f83;
+      --accent-soft: #ead2cb;
+      --green: #a8b8a0;
+      --shadow: 0 18px 40px rgba(149, 122, 112, 0.12);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Serif SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(234,210,203,0.8), transparent 30%),
+        linear-gradient(180deg, #f9f5f1 0%, #f6eee7 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.86), rgba(248,240,235,0.82));
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: var(--shadow);
+      border-radius: 32px;
+      padding: 34px 28px 26px;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -60px;
+      top: -80px;
+      background: radial-gradient(circle, rgba(198,143,131,0.16), transparent 65%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--subtext);
+      background: rgba(255,255,255,0.7);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      font-size: 16px;
+      line-height: 1.9;
+      color: var(--subtext);
+      max-width: 760px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .hero-card, .section, .note-box {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.78);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-card {
+      padding: 20px;
+    }
+
+    .hero-card h3, .section h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(234,210,203,0.46);
+      border: 1px solid rgba(198,143,131,0.18);
+      color: #7b6158;
+      font-size: 14px;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .quick-item {
+      background: rgba(255,255,255,0.64);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .quick-item .label {
+      display: block;
+      color: var(--subtext);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .quick-item .value {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 26px 0 20px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 22px rgba(198,143,131,.28);
+    }
+
+    .secondary {
+      background: rgba(255,255,255,.72);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+
+    .section {
+      padding: 22px 20px;
+      margin-bottom: 18px;
+    }
+
+    .section p {
+      margin: 10px 0;
+      line-height: 1.95;
+      color: #665652;
+    }
+
+    .muted {
+      color: var(--subtext);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .list-item {
+      padding: 14px 14px 14px 16px;
+      background: rgba(255,255,255,.66);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      line-height: 1.85;
+      position: relative;
+    }
+
+    .list-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 14px;
+      bottom: 14px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), rgba(198,143,131,0.2));
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .time-tag {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(168,184,160,.18);
+      border: 1px solid rgba(168,184,160,.28);
+      text-align: center;
+      font-size: 13px;
+      color: #687364;
+    }
+
+    .timeline-card {
+      background: rgba(255,255,255,.66);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      line-height: 1.9;
+    }
+
+    .reflection {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .reflection .prompt {
+      padding: 12px 14px;
+      background: rgba(255,255,255,.66);
+      border: 1px dashed rgba(198,143,131,.35);
+      border-radius: 14px;
+      line-height: 1.8;
+    }
+
+    .sticky {
+      position: sticky;
+      top: 18px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.76);
+      padding: 16px;
+      font: inherit;
+      color: var(--text);
+      line-height: 1.9;
+      outline: none;
+    }
+
+    .note-box {
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--subtext);
+      font-size: 13px;
+      margin-top: 14px;
+      padding-bottom: 18px;
+    }
+
+    [contenteditable="true"]:focus {
+      outline: 2px dashed rgba(198,143,131,.35);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .layout { grid-template-columns: 1fr; }
+      .sticky { position: static; }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(100% - 20px, 1120px); }
+      .hero { padding: 24px 18px 20px; border-radius: 24px; }
+      .hero-card, .section, .note-box { border-radius: 18px; }
+      .timeline-item { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="eyebrow">personal reflection page</div>
+      <h1 contenteditable="true">宝宝 · 我的个人观察网页</h1>
+      <p class="subtitle" contenteditable="true">
+        这是一个给自己看的小小主页。不是为了对外证明什么，而是为了在混乱、摇摆、被外界带跑的时候，重新看见我是谁、我正在经历什么、我其实已经拥有什么。
+      </p>
+
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h3>我是谁</h3>
+          <p class="muted" contenteditable="true">
+            我是一个感受力很强、也很会观察的人。工作里，我有专业性、责任感和现实判断；关系里，我有热度、真诚和连接欲；面对人生时，我一直在寻找一种既不压抑自己、也不被情绪拖着走的活法。
+          </p>
+          <div class="chips">
+            <span class="chip">EHS 专业经理</span>
+            <span class="chip">INFP 气质</span>
+            <span class="chip">高敏感 / 高观察</span>
+            <span class="chip">理性与温度并存</span>
+            <span class="chip">在寻找稳定的主体性</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h3>快速锚点</h3>
+          <div class="quick-grid">
+            <div class="quick-item"><span class="label">此刻核心任务</span><span class="value" contenteditable="true">更了解自己，而不是更用力改造自己</span></div>
+            <div class="quick-item"><span class="label">我最想建立的能力</span><span class="value" contenteditable="true">稳定、自持、分辨感受与事实</span></div>
+            <div class="quick-item"><span class="label">我最珍贵的资源</span><span class="value" contenteditable="true">洞察力、表达力、感受力、反思力</span></div>
+            <div class="quick-item"><span class="label">提醒自己</span><span class="value" contenteditable="true">我不是没有答案，我常常只是被情绪淹没了</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <button class="primary" onclick="window.print()">保存为 PDF</button>
+      <button class="secondary" onclick="saveNotes()">保存右侧笔记</button>
+      <button class="secondary" onclick="clearNotes()">清空右侧笔记</button>
+    </div>
+
+    <div class="layout">
+      <main>
+        <section class="section">
+          <h2>01｜我的职业与历程</h2>
+          <p contenteditable="true">
+            我目前的身份，是一名做 EHS 相关工作的专业经理。这个职业部分，说明我并不是一个只会感受和空想的人；相反，我长期在现实系统里做判断、做协调、做推进，也承担责任。我的工作面向的是规则、风险、流程、合规和落地，这其实锻炼了我很强的现实感。
+          </p>
+          <p contenteditable="true">
+            但我的人生体验并不只是“职业角色”。我内在还有一部分非常鲜活、很敏锐、很想理解人、也很想理解自己的部分。于是我经常会处在两个世界之间：一边是现实的、要求稳定和执行的系统；一边是内在的、追求真实和意义的自我。
+          </p>
+          <p contenteditable="true">
+            我现在想做的，不是二选一，而是慢慢把这两部分整合起来：既保留我的专业能力，也不再牺牲我的内在感受；既看见现实，也不丢失灵魂。
+          </p>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="time-tag">过去</div>
+              <div class="timeline-card" contenteditable="true">
+                更容易被外界带跑，被某个瞬间的情绪、某个人的气场、某种可能性打动，然后快速投入。
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="time-tag">现在</div>
+              <div class="timeline-card" contenteditable="true">
+                开始更频繁地复盘自己，观察自己的模式，想把“我为什么总这样”慢慢变成“我终于看懂自己了”。
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="time-tag">接下来</div>
+              <div class="timeline-card" contenteditable="true">
+                练习稳定主体性，把洞察真正转成日常中的选择、边界和行动，而不只是停留在理解层面。
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>02｜我的天赋、特点与优势</h2>
+          <div class="list">
+            <div class="list-item" contenteditable="true">
+              <strong>很强的洞察力：</strong>我对人、对氛围、对语言背后的东西非常敏感，经常能迅速抓到一个人的气质、逻辑和问题核心。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>表达和提炼能力好：</strong>我不是只有感受，我还能把复杂体验梳理成清晰的话，这是一种很珍贵的能力。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>有理想感，也有现实判断：</strong>我会被温度、价值观和真实吸引，但我也并非没有脑子，我其实一直在寻找“理想主义 + 理性表达”的结合。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>自我观察能力强：</strong>我会复盘、会对照、会反思，虽然这有时会变成反刍，但它也说明我具备很强的成长潜力。
+            </div>
+            <div class="list-item" contenteditable="true">
+              <strong>连接能力强：</strong>我容易被人与人之间真正的火花吸引，也擅长捕捉人与人之间的微妙关系与情绪流动。
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>03｜我要提醒自己避免陷进去的地方</h2>
+          <p class="muted">这一块做成了“温柔提醒”，不是批评自己，而是在失稳时拉自己一把。</p>
+          <div class="list">
+            <div class="list-item" contenteditable="true">
+              不要把<strong>当下很强烈的情绪</strong>，直接当成事实本身。情绪是真实的，但它不一定等于真相。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要因为某个人、某句话、某个瞬间很打动我，就立刻把对方抬到很高的位置，或迅速脑补一整套故事。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要在内心里不停追问“我到底是不是有问题”，很多时候我不是坏掉了，我只是被旧回路触发了。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要反复沉浸在“我怎么又这样”的自责里。比起羞耻，更重要的是看见模式、拉开距离、重新选择。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要把“我知道”误以为“我已经做到了”。我的挑战常常不是认知不足，而是稳定执行、持续落地和当下自持。
+            </div>
+            <div class="list-item" contenteditable="true">
+              不要总是急着找到最终答案。有些阶段的任务，不是彻底想通，而是带着模糊继续生活，并慢慢长出稳定感。
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>04｜我需要反复记住的几句话</h2>
+          <div class="reflection">
+            <div class="prompt" contenteditable="true">我不是缺少感觉，我需要的是分辨、整合和落地。</div>
+            <div class="prompt" contenteditable="true">真正的稳定，不是没有波动，而是波动来了，我也能不跟着全部跑掉。</div>
+            <div class="prompt" contenteditable="true">我追求的不是“变成另一个人”，而是越来越像真正的自己。</div>
+            <div class="prompt" contenteditable="true">我能欣赏别人，但不必因此丢掉自己。</div>
+            <div class="prompt" contenteditable="true">我可以慢一点，再判断；慢一点，再靠近；慢一点，再下结论。</div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sticky">
+        <section class="note-box">
+          <h2 style="margin-top:0;font-size:20px;">05｜今日观察笔记</h2>
+          <p class="muted">这里会自动保存在浏览器本地。你可以每天打开这个网页，写一点点。</p>
+          <textarea id="dailyNotes" placeholder="今天我最明显的情绪是什么？
+它来自事实，还是来自触发？
+我此刻最需要的是行动、安抚、边界，还是休息？"></textarea>
+        </section>
+
+        <section class="section" style="margin-bottom:18px;">
+          <h2>06｜每日小问题</h2>
+          <div class="reflection">
+            <div class="prompt" contenteditable="true">我今天什么时候最像自己？</div>
+            <div class="prompt" contenteditable="true">我今天什么时候又被带跑了？</div>
+            <div class="prompt" contenteditable="true">那一刻我真正害怕的是什么？</div>
+            <div class="prompt" contenteditable="true">如果我更稳一点，我下一步会怎么做？</div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>07｜使用说明</h2>
+          <div class="list">
+            <div class="list-item">这个网页是 <strong>单个 HTML 文件</strong>，不需要装网站环境，直接双击就能在浏览器打开。</div>
+            <div class="list-item">你可以直接修改页面里大部分文字：点进去就能编辑，我已经把很多区域做成可改内容了。</div>
+            <div class="list-item">右侧“今日观察笔记”支持本地保存，适合你每天回来复盘一点。</div>
+            <div class="list-item">想分享给别人时，可以把这个 HTML 文件发出去；想存档时，可以点上面的“保存为 PDF”。</div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="footer">给自己看的网页，也可以很温柔。🌷</div>
+  </div>
+
+  <script>
+    const noteKey = 'baby_personal_reflection_notes_v1';
+    const notesEl = document.getElementById('dailyNotes');
+
+    function loadNotes() {
+      const saved = localStorage.getItem(noteKey);
+      if (saved !== null) notesEl.value = saved;
+    }
+
+    function saveNotes() {
+      localStorage.setItem(noteKey, notesEl.value);
+      alert('笔记已经保存到当前浏览器啦。');
+    }
+
+    function clearNotes() {
+      if (confirm('确定要清空右侧笔记吗？')) {
+        notesEl.value = '';
+        localStorage.removeItem(noteKey);
+      }
+    }
+
+    notesEl.addEventListener('input', () => {
+      localStorage.setItem(noteKey, notesEl.value);
+    });
+
+    loadNotes();
+  </script>
 </body>
 </html>
